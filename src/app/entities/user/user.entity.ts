@@ -1,20 +1,18 @@
 import { Column, CreateDateColumn, JoinColumn, OneToMany, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
 
 import { Entity } from '@entity-management/decorators/entity.decorator';
-import { Database } from '@entity-management/constants/database.enum';
 import { Field } from '@entities/_common/decorators/field.decorator';
 import { ObjectId } from '@entities/_common/object-id/object-id';
 import { BaseEntity } from '@common/base-types/base.entity';
 import { AvatarImage } from '@entities/avatar-image/avatar-image.entity';
 import { Session } from '@entities/session/session.entity';
+import { Account } from '../account/account.entity';
 
-@Entity({
-  database: Database.Mysql
-})
+@Entity()
 export class User extends BaseEntity {
   @Field((_type) => ObjectId)
   @PrimaryGeneratedColumn()
-  public readonly id: number;
+  public id!: number;
 
   @Field((_type) => String, { filterable: true, sortable: true })
   @Column({ type: 'varchar', length: 255 })
@@ -33,10 +31,10 @@ export class User extends BaseEntity {
 
   @Field((_type) => Date, { filterable: true, sortable: true })
   @CreateDateColumn({ name: 'created_at' })
-  createdAt: Date;
+  createdAt!: Date;
 
   @UpdateDateColumn({ name: 'updated_at' })
-  updatedAt: Date;
+  updatedAt!: Date;
 
   @Column({ name: 'stripe_customer_id', type: 'varchar', length: 255, nullable: true })
   stripeCustomerId?: string | null;
@@ -55,10 +53,6 @@ export class User extends BaseEntity {
 
   // Not required for better auth
 
-  @Field((_type) => String, { filterable: true, sortable: true, nullable: true })
-  @Column({ type: 'varchar', length: 255, nullable: true })
-  country!: string | null;
-
   @Field((_type) => Boolean, { filterable: true, sortable: true })
   @Column({ name: 'terms_agreed', type: 'tinyint', default: false })
   termsAgreed!: boolean;
@@ -66,14 +60,17 @@ export class User extends BaseEntity {
   // * One-to-one relations
 
   @Column({ name: 'avatar_image_id', nullable: true })
-  avatarImageId: number | null;
+  avatarImageId!: number | null;
 
   @OneToOne((_type) => AvatarImage, { nullable: true, onDelete: 'SET NULL', orphanedRowAction: 'nullify' })
   @JoinColumn({ name: 'avatar_image_id' })
-  avatarImage: AvatarImage | null;
+  avatarImage!: AvatarImage | null;
 
   // * One-to-Many relations
 
   @OneToMany((_type) => Session, (session) => session.user)
   sessions!: Promise<Session[]>;
+
+  @OneToMany((_type) => Account, (account) => account.user)
+  accounts!: Promise<Account[]>;
 }

@@ -1,8 +1,8 @@
 import { v4 as uuidv4 } from 'uuid';
 
-import { IRequesterAuthContext, IRequesterContext } from '@/app/_common/interfaces/requester-context.interface';
-import { RequestContext } from '@/app/_common/interfaces/extended-request.interface';
-import { GraphLocale } from '@/app/_common/i18n/types';
+import { IRequesterAuthContext, IRequesterContext } from '@common/interfaces/requester-context.interface';
+import { RequestContext } from '@common/interfaces/extended-request.interface';
+import { GraphLocale } from '@common/i18n/types';
 
 export class RequesterContext implements IRequesterContext {
   public readonly authContext: IRequesterAuthContext;

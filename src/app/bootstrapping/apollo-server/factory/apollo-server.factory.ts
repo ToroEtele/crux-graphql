@@ -8,12 +8,13 @@ import type IApolloServerFactoryArgs from '../interfaces/apollo-server-factoryAr
 import type { IRequesterContext } from '../../../_common/interfaces/requester-context.interface';
 
 export class ApolloServerFactory {
-  private readonly schema = this.args.schema;
+  private readonly schema;
 
   private readonly httpServer?: Server;
 
   constructor(private readonly args: IApolloServerFactoryArgs) {
     this.httpServer = args.httpServer;
+    this.schema = this.args.schema;
   }
 
   public build(config = this.config): ApolloServer<IRequesterContext> {

@@ -1,4 +1,4 @@
-import { IRequesterContext } from '@/app/_common/interfaces/requester-context.interface';
+import { IRequesterContext } from '@common/interfaces/requester-context.interface';
 import { MiddlewareInterface, NextFn, ResolverData } from 'type-graphql';
 import { Service } from 'typedi';
 

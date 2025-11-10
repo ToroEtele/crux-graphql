@@ -4,7 +4,7 @@ import { Service } from 'typedi';
 
 import { GraphQLFieldConfig, GraphQLObjectTypeConfig, GraphQLResolveInfo } from 'graphql';
 import { extractFieldConfig, extractParentTypeConfig } from './helpers/config.extractors';
-import { IRequesterContext } from '@/app/_common/interfaces/requester-context.interface';
+import { IRequesterContext } from '@common/interfaces/requester-context.interface';
 
 interface LoggerConfig {
   logMessage?: string;

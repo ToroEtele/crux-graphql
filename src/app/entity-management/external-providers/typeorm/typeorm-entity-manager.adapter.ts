@@ -15,7 +15,7 @@ export class TypeORMEntityManager implements IEntityManager {
   public create<TEntity>(entityClass: Constructable<TEntity>, plainObject?: Partial<TEntity>): TEntity {
     const objectType: ObjectType<TEntity> = entityClass;
     const deepPartial = <DeepPartial<TEntity>>(plainObject ?? {});
-    return this.entityManager.create<TEntity>(objectType, deepPartial);
+    return this.entityManager.create<TEntity, DeepPartial<TEntity>>(objectType, deepPartial);
   }
 
   public async update<TEntity extends {}>(entityClass: Constructable<TEntity>, entity: TEntity, plainObject?: Partial<TEntity>): Promise<TEntity> {

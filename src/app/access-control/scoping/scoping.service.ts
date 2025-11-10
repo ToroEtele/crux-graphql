@@ -7,7 +7,7 @@ import { ScopingFunction } from './types/scoping-function.type';
 import { PromiseMaybe } from '@common/base-types/maybe.type';
 
 import { isSystemAdmin } from '@access-control/authentication/auth-checker';
-import { DatabaseUtil } from '@/app/entity-management/utils/database.util';
+import { DatabaseUtil } from '@entity-management/utils/database.util';
 import { Constructable } from '@common/base-types/constructable.type';
 
 import { defaultQueryScopeMappings } from './mappings/query-scopes.mapping';
@@ -44,7 +44,7 @@ export class ScopingService {
   public async fetch<TEntity extends {}>(authContext: IRequesterAuthContext, entityClass: Constructable<TEntity>, id: number | string): PromiseMaybe<TEntity> {
     if (authContext.user) {
       const scopeMap = this.getQueryScopeMap(authContext);
-      return await this.findOneScoped(authContext, entityClass, id, scopeMap);
+      return this.findOneScoped(authContext, entityClass, id, scopeMap);
     }
     throw new UnauthenticatedError();
   }
@@ -63,7 +63,7 @@ export class ScopingService {
     scopingMap: ScopingFunctionMap
   ): PromiseMaybe<TEntity> {
     const query = this.getScopedQuery(authContext, entityClass, scopingMap);
-    return await query.andWhere(<ConnectionFilter>{ id: { eq: id } }).getOne();
+    return query.andWhere(<ConnectionFilter>{ id: { eq: id } }).getOne();
   }
 
   private getScopedQuery<TEntity extends {}>(

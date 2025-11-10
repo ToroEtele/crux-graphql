@@ -1,7 +1,6 @@
 import { IsOptional, Max, Min } from 'class-validator';
-import { ArgsType, Int } from 'type-graphql';
+import { ArgsType, Field, Int } from 'type-graphql';
 
-import { Field } from '../../../entities/_common/decorators/field.decorator';
 import { IPaginationArgs } from '../interfaces/pagination-args.interface';
 
 @ArgsType()

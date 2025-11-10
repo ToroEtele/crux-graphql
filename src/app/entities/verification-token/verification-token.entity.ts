@@ -1,9 +1,8 @@
 import { Column, CreateDateColumn, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
 
-import { Database } from '../../entity-management/constants/database.enum';
 import { Entity } from '../../entity-management/decorators/entity.decorator';
 
-@Entity({ database: Database.Mysql })
+@Entity()
 export class VerificationToken {
   @PrimaryGeneratedColumn()
   public readonly id!: number;
@@ -21,5 +20,5 @@ export class VerificationToken {
   createdAt!: Date;
 
   @UpdateDateColumn({ name: 'updated_at' })
-  updatedAt: Date;
+  updatedAt!: Date;
 }

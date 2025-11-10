@@ -6,7 +6,6 @@ import { DatabaseUtil } from '@entity-management/utils/database.util';
 export const userFactory = Factory.define<User>('user')
   .sequence('name', (n) => `Name ${n}`)
   .sequence('email', (n) => `name${n}@gmail.com`)
-  .attr('country', 'Romania')
   .attr('termsAgreed', true)
   .attr('createdAt', () => new Date())
   .attr('updatedAt', ['createdAt'], (createdAt) => createdAt);

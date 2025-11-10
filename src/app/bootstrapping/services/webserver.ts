@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-confusing-void-expression */
 import { expressMiddleware } from '@apollo/server/express4';
-import { graphqlUploadExpress } from 'graphql-upload';
 import cookieParser from 'cookie-parser';
 import { createServer } from 'http';
 import { json } from 'body-parser';
@@ -19,12 +18,11 @@ import { config } from '../../_common/config/config.service';
 import type { IBootstrapableService } from '../../_common/interfaces/bootstrapable.interface';
 import type { IRequesterContext } from '../../_common/interfaces/requester-context.interface';
 
-import { RequestLoggerMiddleware } from '@/app/_common/logging/middleware/request-logger.middleware';
+import { RequestLoggerMiddleware } from '@common/logging/middleware/request-logger.middleware';
 import { AuthMiddleware } from '@access-control/authentication/middlewares/auth-middleware';
-import { RequestContext } from '@/app/_common/interfaces/extended-request.interface';
-import { nonNullable } from '@/app/_common/utils/non-nullable.util';
+import { RequestContext } from '@common/interfaces/extended-request.interface';
+import { nonNullable } from '@common/utils/non-nullable.util';
 import { AvatarImageController } from '@entities/avatar-image/avatar-image.controller';
-import { ExportController } from '@/app/reports/controller/export.controller';
 
 interface IWebserverServiceArgs {
   hostname: string;
@@ -73,14 +71,6 @@ export class WebserverService implements IBootstrapableService {
 
     app.use(json());
     AvatarImageController.use(app);
-    ExportController.use(app);
-
-    app.use(
-      graphqlUploadExpress({
-        maxFileSize: 1024 * 1024,
-        maxFiles: 10
-      })
-    );
 
     return app;
   }

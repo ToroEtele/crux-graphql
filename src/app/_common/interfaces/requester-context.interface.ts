@@ -1,4 +1,4 @@
-import { GraphLocale } from '@/app/_common/i18n/types';
+import { GraphLocale } from '@common/i18n/types';
 
 import { Subscription } from '@entities/subscription/subscription.entity';
 import { Session } from '@entities/session/session.entity';

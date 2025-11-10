@@ -5,7 +5,6 @@ import { Container } from 'typedi';
 import { EnumsMetadataService } from '../../../query-building/filtering/services/enum-metadata.service';
 import { IEnumFilterData } from '../../../query-building/filtering/types/enum-filter-data.interface';
 
-// eslint-disable-next-line @typescript-eslint/ban-types
 export function registerGraphQLEnum<TEnum extends object>(
   enumObj: TEnum,
   enumConfig: EnumConfig<TEnum> & {

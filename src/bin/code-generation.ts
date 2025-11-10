@@ -4,13 +4,13 @@ import { FileSystemService } from '@utils/storage-system/external-providers/file
 import { IStorageSystem } from '@utils/storage-system/interfaces/storage-system.interface';
 import { EntityLoader } from '@entities/_common/entity-loader.service';
 
+import { EnumConnectionFiltersGenerator } from '@query-building/connection/filtering/code-generation/enum-connection-filters.generator';
 import { ConnectionFiltersGenerator } from '@query-building/connection/filtering/code-generation/connection-filters.generator';
 import { AllEntitiesGenerator } from '@entities/_common/metadata/code-generation/all-entities.generator';
 import { ConnectionGenerator } from '@query-building/connection/code-generation/connection.generator';
 import { OrderInputGenerator } from '@query-building/sorting/code-generation/order-input.generator';
 import { OrderFieldGenerator } from '@query-building/sorting/code-generation/order-field.generator';
 import { ResolverGenerator } from '@entity-management/code-generation/resolver.generator';
-import { EnumConnectionFiltersGenerator } from '@query-building/connection/filtering/code-generation/enum-connection-filters.generator';
 
 (async () => {
   await EntityLoader.loadAll();

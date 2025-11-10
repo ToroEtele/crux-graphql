@@ -8,9 +8,11 @@ export class ConnectionService<TEntity> {
   public static readonly edgesFields = ['edges', 'nodes', 'pageInfo'];
   public static readonly countFields = ['totalCount', 'pageInfo'];
 
-  private readonly paginationService: PaginationService<TEntity> = new PaginationService<TEntity>(this.args.paginationArgs);
+  private readonly paginationService: PaginationService<TEntity>;
 
-  constructor(private readonly args: IConnectionServiceArgs<TEntity>) {}
+  constructor(private readonly args: IConnectionServiceArgs<TEntity>) {
+    this.paginationService = new PaginationService<TEntity>(this.args.paginationArgs);
+  }
 
   public async getConnection(): Promise<ConnectionModel<TEntity>> {
     const page = await this.paginationService.getPage(this.args.query);

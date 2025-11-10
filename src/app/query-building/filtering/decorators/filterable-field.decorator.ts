@@ -11,12 +11,12 @@ import { ConnectionFloatFilterInput } from '../../connection/filtering/types/con
 import { ConnectionDateFilterInput } from '../../connection/filtering/types/connection-date-filter.input';
 import { ConnectionIntFilterInput } from '../../connection/filtering/types/connection-int-filter.input';
 
-import { metadataManager, MetadataType } from '@/app/_common/metadata';
-import { ReflectService } from '@/app/reflection/reflect.service';
+import { metadataManager, MetadataType } from '@common/metadata';
+import { ReflectService } from '@app/reflection/reflect.service';
 
 import { IFilterablePrimitiveFieldMetadata } from '../interfaces/filterable-primitive-field-metadata.interface';
 import { IFilterableEnumFieldMetadata } from '../interfaces/filterable-enum-field-metadata.interface';
-import { ReflectorPrimitiveType } from '@/app/reflection/constants/primitive-type.enum';
+import { ReflectorPrimitiveType } from '@app/reflection/constants/primitive-type.enum';
 import { FilterableFieldKind } from '../constants/filterable-field-kind.enum';
 
 import { IFilterableUntypedFieldMetadata } from '../interfaces/filterable-untyped-field-metadata.interface';

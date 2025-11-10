@@ -29,6 +29,8 @@ export class TypeORMLogAdapter implements Logger {
   public log(level: TypeORMLogLevel, message: any): void {
     const messageText = (typeof message === 'object' ? message.message : message)?.toString() ?? '';
     if (this.isMessageIgnored(messageText)) return;
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-expect-error
     this.logService[typeORMLogLevelMap[level]](message);
   }
 

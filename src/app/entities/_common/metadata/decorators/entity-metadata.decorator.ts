@@ -3,7 +3,6 @@ import { ColumnOptions } from 'typeorm';
 import { BaseClassDecorator } from '@common/base-types/decorators/base-class.decorator';
 import { Constructable } from '@common/base-types/constructable.type';
 
-import { Database } from '@entity-management/constants/database.enum';
 import { metadataManager, MetadataType } from '@common/metadata';
 
 interface IRetrievable {
@@ -27,7 +26,6 @@ export type IEntityMetadataDecoratorArgs = {
    * @default false
    */
   skipId?: boolean;
-  database?: Database;
   /**
    * Used when generated id and rawID fields should be admin-only.
    * Ignored when skipId is true.
@@ -42,24 +40,19 @@ export type IEntityMetadataDecoratorArgs = {
 } & (IAbstract | IRetrievable);
 
 class EntityMetadataDecorator implements BaseClassDecorator {
-  constructor(private readonly args: IEntityMetadataDecoratorArgs) {}
+  constructor(private readonly args?: IEntityMetadataDecoratorArgs) {}
 
   public getDecorator(): ClassDecorator {
     return (targetConstructor) => {
       metadataManager.setClassMetadata(targetConstructor, MetadataType.Entity, {
-        ...this.args,
-        database: this.getDatabase()
+        ...this.args
       });
 
-      if (this.args.implements) {
+      if (this.args?.implements) {
         this.copyParentFieldMetadata(targetConstructor, this.args.implements, MetadataType.FieldFilterable);
         this.copyParentFieldMetadata(targetConstructor, this.args.implements, MetadataType.FieldSortable);
       }
     };
-  }
-
-  private getDatabase(): IEntityMetadataDecoratorArgs['database'] {
-    return this.args.implements ? metadataManager.fetchClassMetadata(this.args.implements, MetadataType.Entity).database : this.args.database;
   }
 
   private copyParentFieldMetadata(target: Function, parentKlass: Function, metadataType: MetadataType): void {
@@ -71,4 +64,4 @@ class EntityMetadataDecorator implements BaseClassDecorator {
   }
 }
 
-export const GenericEntity = (args: IEntityMetadataDecoratorArgs): ClassDecorator => new EntityMetadataDecorator(args).getDecorator();
+export const GenericEntity = (args?: IEntityMetadataDecoratorArgs): ClassDecorator => new EntityMetadataDecorator(args).getDecorator();

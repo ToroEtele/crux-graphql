@@ -3,7 +3,7 @@ import { join as pathJoin } from 'node:path';
 import pluralize from 'pluralize';
 
 import { TypescriptRenderer } from '../../../../code-generation/base-types/typescript-renderer.base';
-import { metadataManager, MetadataType } from '@/app/_common/metadata';
+import { metadataManager, MetadataType } from '@common/metadata';
 import { kebabCase } from 'lodash';
 
 interface IConnectionRendererData {

@@ -12,8 +12,8 @@ export class PageInfo implements IPageInfo {
   public hasPreviousPage!: boolean;
 
   @Field({ nullable: true })
-  public startOffset: number;
+  public startOffset!: number;
 
   @Field({ nullable: true })
-  public endOffset: number;
+  public endOffset!: number;
 }

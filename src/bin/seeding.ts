@@ -1,6 +1,7 @@
+import Container from 'typedi';
+
 import { join, resolve } from 'node:path';
 import { DataSource } from 'typeorm';
-import Container from 'typedi';
 
 import { database } from '@entity-management/constants/databases/typeorm.config';
 

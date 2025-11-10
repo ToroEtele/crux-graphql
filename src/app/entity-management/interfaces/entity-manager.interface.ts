@@ -12,5 +12,5 @@ export interface IEntityManager {
 
   save<TEntity extends {}>(entity: TEntity): Promise<TEntity>;
 
-  // saveMany<TEntity extends {}>(entities: TEntity[]): Promise<TEntity[]>;
+  saveMany<TEntity extends {}>(entities: TEntity[]): Promise<TEntity[]>;
 }

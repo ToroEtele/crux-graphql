@@ -1,12 +1,8 @@
-/* eslint-disable new-cap */
-
-import { Constructable } from '@/app/_common/base-types/constructable.type';
-import { metadataManager, MetadataType } from '@common/metadata';
-import { nonNullable } from '@common/utils/non-nullable.util';
+import { Constructable } from '@common/base-types/constructable.type';
 
 import { BaseRepository } from '@entity-management/base-types/base.repository';
 import { RepositoryFactory } from '@entity-management/base-types/repository-factory.type';
-import { databaseRepositoryMap } from '@entity-management/mappings/databases-repository.mapping';
+import { database } from '../constants/databases/typeorm.config';
 
 // eslint-disable-next-line @typescript-eslint/no-extraneous-class
 export class DatabaseUtil {
@@ -18,9 +14,6 @@ export class DatabaseUtil {
   }
 
   public static getRepositoryFactory<TEntity extends {}>(entity: Constructable<TEntity>): RepositoryFactory {
-    const database = nonNullable(metadataManager.fetchClassMetadata(entity, MetadataType.Entity).database);
-    const repositoryFactory = databaseRepositoryMap.get(database);
-    if (!repositoryFactory) throw new Error(`Missing repository factory for ${entity.name}`);
-    return repositoryFactory;
+    return (entity) => database.getRepository(entity);
   }
 }

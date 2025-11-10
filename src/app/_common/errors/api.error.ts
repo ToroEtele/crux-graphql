@@ -1,6 +1,6 @@
 import { GraphQLError, type GraphQLErrorExtensions } from 'graphql';
 
-import { i18nService } from '@bootstrapping/services/i18n.bootstrapable';
+import { i18nService } from '@app/bootstrapping/services/i18n.bootstrapable';
 import { ErrorCode } from './constants/error-codes.enum';
 import type { Maybe } from '../base-types/maybe.type';
 

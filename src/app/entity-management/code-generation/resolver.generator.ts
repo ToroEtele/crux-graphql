@@ -1,7 +1,7 @@
 import { BaseGenerator } from '../../code-generation/base-types/generator.base';
 
 import { IStorageSystem } from '@utils/storage-system/interfaces/storage-system.interface';
-import { metadataManager, MetadataType } from '@/app/_common/metadata';
+import { metadataManager, MetadataType } from '@common/metadata';
 import { ResolverRenderer } from './renderers/resolver.renderer';
 import { kebabCase } from 'lodash';
 

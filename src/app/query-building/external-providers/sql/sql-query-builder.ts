@@ -9,15 +9,16 @@ import { OrderDirection } from '../../sorting/constants/order-direction.enum';
 import { SqlConditionsService } from './services/sql-conditions.service';
 
 export class SqlQueryBuilder<TEntity extends {}> implements IQueryBuilder<TEntity> {
-  private readonly databaseType = this.builder.connection.options.type;
-  // PostgreSQL uses " to quote system identifiers (ANSI standard for databases). MySQL uses ` which is non-standard.
-  private readonly metadata = this.builder.connection.getMetadata(this.entityClass);
-  private readonly conditionsService = new SqlConditionsService(this.entityClass, this.builder);
+  private readonly metadata;
+  private readonly conditionsService;
 
   constructor(
     private readonly entityClass: Constructable<TEntity>,
     public readonly builder: SelectQueryBuilder<TEntity>
-  ) {}
+  ) {
+    this.metadata = this.builder.connection.getMetadata(this.entityClass);
+    this.conditionsService = new SqlConditionsService(this.entityClass, this.builder);
+  }
 
   public andWhere(filter: ConnectionFilter<TEntity>): this {
     const normalizedFilter = this.conditionsService.normalizeFilter(filter);
@@ -126,20 +127,11 @@ export class SqlQueryBuilder<TEntity extends {}> implements IQueryBuilder<TEntit
   }
 
   private buildOrderFieldAlias(field: string): string {
-    // TypeORM aliases columns in case of MySQL
-    if (this.databaseType === 'mysql') return this.getMySQLFieldAlias(field);
-    if (this.databaseType === 'postgres') return this.getPostgresFieldAlias(field);
-    return field;
+    return this.getMySQLFieldAlias(field);
   }
 
   private getMySQLFieldAlias(field: string): string {
-    // TODO: Tech debt sort by joined table param
     return this.getDatabaseFieldName(field);
-    // return `${this.getMainAliasName()}_${this.getDatabaseFieldName(field)}`;
-  }
-
-  private getPostgresFieldAlias(field: string): string {
-    return `"${this.getMainAliasName()}_${this.getDatabaseFieldName(field)}"`;
   }
 
   private getMainAliasName(): string {
@@ -149,7 +141,6 @@ export class SqlQueryBuilder<TEntity extends {}> implements IQueryBuilder<TEntit
 
   private getDatabaseFieldName(field: string): string {
     const columnMetadata = this.metadata.findColumnWithPropertyName(field);
-    // TODO: Tech debt sort by joined table param
     if (!columnMetadata) {
       return field;
     }

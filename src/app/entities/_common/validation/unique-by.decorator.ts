@@ -5,7 +5,7 @@ import { capitalize } from 'lodash';
 import { IRequesterContext } from '@interfaces/requester-context.interface';
 import { ScopingService } from '@access-control/scoping/scoping.service';
 import { Constructable } from '@common/base-types/constructable.type';
-import { get } from '@/app/_common/helpers/get.helper';
+import { get } from '@common/helpers/get.helper';
 import { ApiError } from '@errors/api.error';
 
 export function UniqueBy<TEntity extends { id: number }>(entityClass: Constructable<TEntity>, uniqueFields: Array<keyof TEntity>): MethodDecorator {

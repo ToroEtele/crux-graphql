@@ -1,4 +1,4 @@
-import { metadataManager, MetadataType } from '@/app/_common/metadata';
+import { metadataManager, MetadataType } from '@common/metadata';
 import { IStorageSystem } from '../../../_common/utils/storage-system/interfaces/storage-system.interface';
 import { BaseGenerator } from '../../../code-generation/base-types/generator.base';
 

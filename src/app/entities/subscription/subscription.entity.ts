@@ -1,20 +1,17 @@
 import { Column, PrimaryGeneratedColumn } from 'typeorm';
 
 import { Entity } from '@entity-management/decorators/entity.decorator';
-import { Database } from '@entity-management/constants/database.enum';
 import { Field } from '@entities/_common/decorators/field.decorator';
 import { ObjectId } from '@entities/_common/object-id/object-id';
 
 import { BaseEntity } from '@common/base-types/base.entity';
 import { SubscriptionPlan } from './enum/subscription-plan.enum';
 
-@Entity({
-  database: Database.Mysql
-})
+@Entity()
 export class Subscription extends BaseEntity {
   @Field((_type) => ObjectId)
   @PrimaryGeneratedColumn()
-  public readonly id: number;
+  id!: number;
 
   @Field((_type) => SubscriptionPlan)
   @Column({ name: 'plan', type: 'varchar', length: 255 })
@@ -31,7 +28,7 @@ export class Subscription extends BaseEntity {
   stripeSubscriptionId?: string | null;
 
   @Column({ type: 'varchar', length: '255' })
-  status: string;
+  status!: string;
 
   @Field((_type) => Number, { nullable: true })
   @Column({ name: 'period_start', type: 'bigint', nullable: true })

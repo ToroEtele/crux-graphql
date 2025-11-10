@@ -1,16 +1,18 @@
 import { ObjectType as ObjectTypeDecoratorFactory, InterfaceType as InterfaceTypeDecoratorFactory } from 'type-graphql';
-import { TableInheritance as TableInheritanceFactory } from 'typeorm';
+import {
+  TableInheritance as TableInheritanceFactory,
+  ChildEntity as TypeORMChildEntityDecoratorFactory,
+  Entity as TypeORMEntityDecoratorFactory,
+  ViewEntity as TypeORMViewEntityDecoratorFactory
+} from 'typeorm';
 
 import { GenericEntity as GenericEntityDecoratorFactory } from '@entities/_common/metadata/decorators/entity-metadata.decorator';
 import { BaseClassDecorator } from '../../_common/base-types/decorators/base-class.decorator';
 
 import { EntityDecoratorArgs } from './interfaces/entity-decorator.interface';
-import { metadataManager, MetadataType } from '@common/metadata';
 
-import { DatabaseDecoratorsMap } from '@entity-management/mappings/databases-decorator.mapping';
-
-class EntityDecorator<TEntity> extends BaseClassDecorator {
-  constructor(private readonly options: EntityDecoratorArgs<TEntity>) {
+class EntityDecorator extends BaseClassDecorator {
+  constructor(private readonly options?: EntityDecoratorArgs) {
     super();
   }
 
@@ -28,28 +30,26 @@ class EntityDecorator<TEntity> extends BaseClassDecorator {
   }
 
   private applyDatabaseDecorators(targetConstructor: Function): void {
-    const database = metadataManager.fetchClassMetadata(targetConstructor, MetadataType.Entity).database;
-    if (!database) return;
-    const databaseDecorator = DatabaseDecoratorsMap.get(database);
-    if (!databaseDecorator) throw new Error(`Database decorator is missing for ${this.options.database}`);
-    databaseDecorator(this.options)(targetConstructor);
+    if (this.options?.isView) TypeORMViewEntityDecoratorFactory(this.options.tableName)(targetConstructor);
+    if (this.options?.discriminatorValue !== undefined) TypeORMChildEntityDecoratorFactory(this.options.discriminatorValue)(targetConstructor);
+    TypeORMEntityDecoratorFactory(this.options?.tableName)(targetConstructor);
   }
 
   private applyGraphQLDecorators(targetConstructor: Function): void {
-    if (this.options.abstract) {
+    if (this.options?.abstract) {
       InterfaceTypeDecoratorFactory()(targetConstructor);
     } else {
-      const name = this.options.name;
+      const name = this.options?.name;
       if (name) {
         ObjectTypeDecoratorFactory(name, { implements: this.options.implements })(targetConstructor);
       } else {
-        ObjectTypeDecoratorFactory({ implements: this.options.implements })(targetConstructor);
+        ObjectTypeDecoratorFactory({ implements: this.options?.implements })(targetConstructor);
       }
     }
   }
 
   private applyTableInheritanceDecorators(targetConstructor: Function): void {
-    if (!this.options.discriminatorColumn) return;
+    if (!this.options?.discriminatorColumn) return;
     TableInheritanceFactory({
       column: this.options.discriminatorColumn
     })(targetConstructor);
@@ -77,4 +77,4 @@ class EntityDecorator<TEntity> extends BaseClassDecorator {
  * @param {string | ColumnOptions | undefined} options.discriminatorColumn column used to detect the type
  * @param {boolean | string | undefined} options.discriminatorValue value of the column that differentiates the type
  */
-export const Entity = <TEntity>(options: EntityDecoratorArgs<TEntity>): ClassDecorator => new EntityDecorator<TEntity>(options).getDecorator();
+export const Entity = (options?: EntityDecoratorArgs): ClassDecorator => new EntityDecorator(options).getDecorator();

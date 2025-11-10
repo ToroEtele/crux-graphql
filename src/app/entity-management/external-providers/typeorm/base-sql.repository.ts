@@ -6,7 +6,6 @@ import { TypeORMEntityManager } from './typeorm-entity-manager.adapter';
 import { BaseRepository } from '@entity-management/base-types/base.repository';
 import { Constructable } from '@common/base-types/constructable.type';
 import { IBaseSqlRepositoryMethodOptions } from './interfaces/base-sql-repository-method-options.interface';
-import { ReferencedEntityError } from '@errors/referenced-entity.error';
 
 export class BaseSqlRepository<TEntity extends {}> extends BaseRepository<TEntity> {
   constructor(
@@ -24,7 +23,7 @@ export class BaseSqlRepository<TEntity extends {}> extends BaseRepository<TEntit
   public override async save(entity: TEntity, options: IBaseSqlRepositoryMethodOptions = {}): Promise<TEntity> {
     try {
       return await super.save(entity, options);
-    } catch (e) {
+    } catch (e: any) {
       if (e.code === 'ER_DUP_ENTRY') throw new Error(e.message);
       throw e;
     }
@@ -33,7 +32,7 @@ export class BaseSqlRepository<TEntity extends {}> extends BaseRepository<TEntit
   public override async update(entity: TEntity, updateParams: Partial<TEntity>, options: IBaseSqlRepositoryMethodOptions = {}): Promise<TEntity> {
     try {
       return await this.getManager(options).update(this.entityClass, entity, updateParams);
-    } catch (e) {
+    } catch (e: any) {
       if (e.code === 'ER_DUP_ENTRY') throw new Error(e.message);
       throw e;
     }
@@ -48,7 +47,7 @@ export class BaseSqlRepository<TEntity extends {}> extends BaseRepository<TEntit
       return await this.getManager(options).remove(entity);
     } catch (error: any) {
       if (typeof error.code === 'string' && error.code.startsWith('ER_ROW_IS_REFERENCED')) {
-        throw new ReferencedEntityError(error, this.entityClass);
+        throw new Error('Entity is referenced');
       }
       throw error;
     }

@@ -2,7 +2,7 @@ import { join as pathJoin } from 'node:path';
 import { kebabCase } from 'lodash';
 import pluralize from 'pluralize';
 
-import { metadataManager, MetadataType } from '@/app/_common/metadata';
+import { metadataManager, MetadataType } from '@common/metadata';
 
 import { TypescriptRenderer } from '../../../code-generation/base-types/typescript-renderer.base';
 

@@ -1,7 +1,8 @@
 import { Field, InputType } from 'type-graphql';
+import { User } from '../user.entity';
 
 @InputType()
-export class UpdateUserInput {
+export class UpdateUserInput implements Partial<User> {
   @Field((_type) => String, { nullable: true })
   name?: string;
 }

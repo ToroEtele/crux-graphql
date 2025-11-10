@@ -34,7 +34,7 @@ class FieldDecorator {
     return (target, propertyKey) => {
       try {
         this.getWrappedDecorator()(target, propertyKey);
-      } catch (err) {
+      } catch (err: any) {
         Container.get(LogService).error(err);
         throw new Error('failed in decorator. exiting...');
       }

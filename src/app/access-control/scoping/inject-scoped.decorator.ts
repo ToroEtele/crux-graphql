@@ -3,7 +3,7 @@ import Container from 'typedi';
 
 import { IRequesterContext } from '@interfaces/requester-context.interface';
 import { Constructable } from '@common/base-types/constructable.type';
-import { get } from '@/app/_common/helpers/get.helper';
+import { get } from '@common/helpers/get.helper';
 
 import { ScopingService } from './scoping.service';
 

@@ -15,12 +15,14 @@ import { TypeORMEntityManager } from '@entity-management/external-providers/type
 import { QueryService } from '@query-building/query.service';
 
 export abstract class BaseRepository<TEntity extends {}> implements IBaseRepository<TEntity> {
-  protected readonly alias = camelCase(this.entityClass.name);
+  protected readonly alias;
 
   constructor(
     protected manager: TypeORMEntityManager,
     protected entityClass: Constructable<TEntity>
-  ) {}
+  ) {
+    this.alias = camelCase(this.entityClass.name);
+  }
 
   public async buildAndSave(entity: Partial<TEntity>, options: IBaseRepositoryMethodOptions = {}): Promise<TEntity> {
     return await this.save(this.build(entity, options), options);

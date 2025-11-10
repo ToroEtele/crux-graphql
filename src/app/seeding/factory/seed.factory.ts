@@ -1,6 +1,6 @@
 import Container from 'typedi';
 
-import { LogService } from '@/app/_common/logging/log.service';
+import { LogService } from '@logging/log.service';
 
 import { SeedFactoryArgs } from '../interfaces/seed-factory-args.interface';
 

@@ -3,7 +3,7 @@ import Container from 'typedi';
 import { Constructable } from '@common/base-types/constructable.type';
 
 import { Entity } from '../../entities/_generated/constants/entities-list.constant';
-import { ReflectService } from '@/app/reflection/reflect.service';
+import { ReflectService } from '@app/reflection/reflect.service';
 import { DatabaseUtil } from '../utils/database.util';
 
 export function InjectRepository(entity: Constructable<Entity>): ParameterDecorator & PropertyDecorator {

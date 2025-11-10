@@ -2,11 +2,11 @@ import { GraphQLSchema, FormattedExecutionResult } from 'graphql';
 import { ApolloServer, GraphQLResponse } from '@apollo/server';
 import { NonEmptyArray } from 'type-graphql';
 
-import { GraphQLBuildSchemaOptionsFactory } from '@bootstrapping/graphql-schema/graphqlBuildSchemaOptions.factory';
-import { ApolloServerFactory } from '@bootstrapping/apollo-server/factory/apollo-server.factory';
-import { GraphQLSchemaFactory } from '@bootstrapping/graphql-schema/graphqlSchema.factory';
-import { databaseConnection } from '@bootstrapping/services/database-connection';
-import { BootstrapService } from '@bootstrapping/bootstrap.service';
+import { GraphQLBuildSchemaOptionsFactory } from '@app/bootstrapping/graphql-schema/graphqlBuildSchemaOptions.factory';
+import { ApolloServerFactory } from '@app/bootstrapping/apollo-server/factory/apollo-server.factory';
+import { GraphQLSchemaFactory } from '@app/bootstrapping/graphql-schema/graphqlSchema.factory';
+import { databaseConnection } from '@app/bootstrapping/services/database-connection';
+import { BootstrapService } from '@app/bootstrapping/bootstrap.service';
 
 import { RequesterContext } from '@access-control/_common/requester-context';
 import { IRequesterAuthContext, IRequesterContext } from '@interfaces/requester-context.interface';

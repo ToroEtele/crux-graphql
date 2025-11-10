@@ -3,43 +3,58 @@
     "require": ["tsconfig-paths/register"]
   },
   "compilerOptions": {
-    "jsx": "react",
-    "target": "ES2017",
+    /* --- Core settings --- */
+    "target": "ES2022",
     "module": "CommonJS",
     "moduleResolution": "node",
-    "strict": false,
     "outDir": "dist",
     "rootDir": "src",
-    "esModuleInterop": true,
+
+    /* --- Type safety --- */
+    "strict": true,
+    "noImplicitAny": true,
+    "strictNullChecks": true,
     "forceConsistentCasingInFileNames": true,
     "skipLibCheck": true,
-    "sourceMap": true,
-    "inlineSources": true,
-    "sourceRoot": "/",
-    "strictNullChecks": true,
-    "allowImportingTsExtensions": false,
-    "baseUrl": "./",
-    "paths": {
-      "@context/*": ["./src/app/bootstrapping/apollo-server/interfaces/*"],
-      "@code-generation/*": ["./src/app/code-generation/*"],
-      "@entity-management/*": ["./src/app/entity-management/*"],
-      "@interfaces/*": ["./src/app/_common/interfaces/*"],
-      "@access-control/*": ["./src/app/access-control/*"],
-      "@query-building/*": ["./src/app/query-building/*"],
-      "@bootstrapping/*": ["./src/app/bootstrapping/*"],
-      "@config/*": ["./src/app/_common/config/*"],
-      "@errors/*": ["./src/app/_common/errors/*"],
-      "@utils/*": ["./src/app/_common/utils/*"],
-      "@entities/*": ["./src/app/entities/*"],
-      "@common/*": ["./src/app/_common/*"],
-      "@tests/*": ["./src/__tests__/*"],
-      "@db/*": ["./src/app/db*"],
-      "@/*": ["./src/*"]
-    },
-    "types": ["node", "jest"],
+
+    /* --- Decorators --- */
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
-    "resolveJsonModule": true
+
+    /* --- Source maps --- */
+    "sourceMap": true,
+    "inlineSources": true,
+
+    /* --- Module interoperability --- */
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "resolveJsonModule": true,
+
+    /* --- Path aliases --- */
+    "baseUrl": "./",
+    "paths": {
+      "@app/*": ["src/app/*"],
+      "@entity-management/*": ["src/app/entity-management/*"],
+      "@access-control/*": ["src/app/access-control/*"],
+      "@query-building/*": ["src/app/query-building/*"],
+      "@entities/*": ["src/app/entities/*"],
+
+      /* Common */
+      "@common/*": ["src/app/_common/*"],
+      "@interfaces/*": ["src/app/_common/interfaces/*"],
+      "@config/*": ["src/app/_common/config/*"],
+      "@logging/*": ["src/app/_common/logging/*"],
+      "@errors/*": ["src/app/_common/errors/*"],
+      "@utils/*": ["src/app/_common/utils/*"]
+    },
+
+    /* --- Environment --- */
+    "types": ["node", "jest"],
+
+    /* --- ESM interop --- */
+    "allowImportingTsExtensions": false,
+    "noEmitOnError": true
   },
-  "include": ["src/**/*.ts", "src/**/*.tsx"]
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "dist", "**/*.test.ts"]
 }

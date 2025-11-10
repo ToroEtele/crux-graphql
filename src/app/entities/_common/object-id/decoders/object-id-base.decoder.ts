@@ -14,12 +14,17 @@ import { IObjectId } from '../object-id.interface';
 export abstract class ObjectIdBaseDecoder {
   protected errorMessage = 'Malformed ID received.';
   private paddingSize = 3;
-  private typeLength = this.getTypeLength(this.encodedId);
-  protected idStartPosition = this.typeLength + this.paddingSize + 1;
-  private type = this.encodedId.substring(1 + this.paddingSize, this.idStartPosition) || undefined;
-  protected id = this.encodedId.substring(this.idStartPosition);
+  private typeLength;
+  protected idStartPosition;
+  private type;
+  protected id;
 
-  constructor(private encodedId: string) {}
+  constructor(private encodedId: string) {
+    this.typeLength = this.getTypeLength(this.encodedId);
+    this.idStartPosition = this.typeLength + this.paddingSize + 1;
+    this.type = this.encodedId.substring(1 + this.paddingSize, this.idStartPosition) || undefined;
+    this.id = this.encodedId.substring(this.idStartPosition);
+  }
 
   // N008TypeName1 -> N + 008 + TypeName + 1
   // S008TypeNameStringId -> S + 008 + TypeName + StringId
