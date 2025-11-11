@@ -16,4 +16,4 @@ COPY assets assets
 
 EXPOSE 4000
 
-CMD npm run migration:run --all && npm run server:prod
+CMD npm run migration:run && npm run server:prod

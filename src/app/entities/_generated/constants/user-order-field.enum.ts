@@ -7,7 +7,6 @@ export enum UsersOrderField {
   'email' = 'email',
   'emailVerified' = 'emailVerified',
   'createdAt' = 'createdAt',
-  'country' = 'country',
   'termsAgreed' = 'termsAgreed',
 }
 

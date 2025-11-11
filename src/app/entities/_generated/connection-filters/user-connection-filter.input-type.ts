@@ -29,10 +29,6 @@ export class UsersFilterInput implements ConnectionFilter<User> {
   @ValidateNested()
   public createdAt?: ConnectionDateFilterInput;
 
-  @GraphQLField(_type => ConnectionStringFilterInput, { nullable: true, admin: false })
-  @ValidateNested()
-  public country?: ConnectionStringFilterInput;
-
   @GraphQLField(_type => ConnectionBooleanFilterInput, { nullable: true, admin: false })
   @ValidateNested()
   public termsAgreed?: ConnectionBooleanFilterInput;

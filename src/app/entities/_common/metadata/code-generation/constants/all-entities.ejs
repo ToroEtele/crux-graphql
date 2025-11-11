@@ -62,22 +62,3 @@ export const retrievableEntityNameTypeMapping = new StrictMap<string, Constructa
   ]
 );
 <% } -%>
-<% if (!!databaseEntities) { -%>
-<% databaseEntities.forEach((entities, databaseName) => { %>
-export const <%=databaseName %>Entities = [
-  <%= entities.map((entity) => entity.name).join(",\n  ") %>
-];
-<% }) -%>
-<% } -%>
-
-<% if (elasticSearchEntities.length) { -%>
-export const elasticSearchEntities = [
-  <%= elasticSearchEntities.map((entity) => entity.name).join(",\n  ") %>
-];
-export const elasticSearchEntityNameTypeMapping = new StrictMap<string, Constructable<Entity>>(
-  "elasticSearchEntityNameTypeMapping",
-  [
-  <%- elasticSearchEntities.map((entity) => `["${entity.name}", ${entity.name}]`).join(",\n  ") %>
-  ]
-);
-<% } -%>

@@ -4,7 +4,7 @@ import { Entity } from '@entity-management/decorators/entity.decorator';
 
 import { User } from '@entities/user/user.entity';
 
-@Entity({ retrievable: false })
+@Entity()
 export class Account {
   @PrimaryGeneratedColumn()
   id!: number;

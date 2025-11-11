@@ -1,4 +1,3 @@
-import { JwtPayload } from 'jsonwebtoken';
 import express from 'express';
 
 import { IRequesterAuthContext, IRequesterContext } from '@common/interfaces/requester-context.interface';
@@ -9,5 +8,4 @@ export type RequestContext = Pick<express.Request, 'accepts' | 'get' | 'headers'
   authContext?: IRequesterAuthContext;
   requestId?: string;
   locale?: GraphLocale;
-  jwtAuth?: JwtPayload;
 };

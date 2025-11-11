@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-confusing-void-expression */
-import { expressMiddleware } from '@apollo/server/express4';
+import { expressMiddleware } from '@as-integrations/express5';
 import cookieParser from 'cookie-parser';
 import { createServer } from 'http';
 import { json } from 'body-parser';
