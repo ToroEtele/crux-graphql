@@ -5,12 +5,12 @@ import { RequesterContext } from '@access-control/_common/requester-context';
 import { RequestContext } from '@interfaces/extended-request.interface';
 import { config } from '@config/config.service';
 
+import { Subscription } from '@entities/subscription/subscription.entity';
 import { Session } from '@entities/session/session.entity';
 import { User } from '@entities/user/user.entity';
 
 import { UnauthorizedError } from '@errors/unauthorized.error';
 import { DatabaseUtil } from '@entity-management/utils/database.util';
-import { Subscription } from '@entities/subscription/subscription.entity';
 
 /**
  * Express middleware that verifies Better Auth session cookies.

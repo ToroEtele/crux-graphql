@@ -8,7 +8,7 @@ import { DatabaseUtil } from '../utils/database.util';
 
 export function InjectRepository(entity: Constructable<Entity>): ParameterDecorator & PropertyDecorator {
   return (object: any, propertyKey: string | symbol | undefined, index?: number): void => {
-    const repositoryFactory = DatabaseUtil.getRepositoryFactory(entity);
+    const repositoryFactory = DatabaseUtil.getRepositoryFactory();
     const repositoryType = ReflectService.getType({ index, propertyKey, target: object });
     Container.registerHandler({
       index,
