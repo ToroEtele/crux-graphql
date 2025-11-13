@@ -9,6 +9,8 @@ import { ConnectionStringFilterInput } from '../../../query-building/connection/
 import { Field as GraphQLField } from '../../_common/decorators/field.decorator';
 import { Exercise } from '../../exercise/exercise.entity';
 
+import { ConnectionDifficultyFilterInput } from './connection-difficulty-filter.input-type';
+
 @InputType()
 export class ExercisesFilterInput implements ConnectionFilter<Exercise> {
   @GraphQLField(_type => ConnectionStringFilterInput, { nullable: true, admin: false })
@@ -17,11 +19,11 @@ export class ExercisesFilterInput implements ConnectionFilter<Exercise> {
 
   @GraphQLField(_type => ConnectionStringFilterInput, { nullable: true, admin: false })
   @ValidateNested()
-  public diff?: ConnectionStringFilterInput;
-
-  @GraphQLField(_type => ConnectionStringFilterInput, { nullable: true, admin: false })
-  @ValidateNested()
   public defaultUnits?: ConnectionStringFilterInput;
+
+  @GraphQLField(_type => ConnectionDifficultyFilterInput, { nullable: true, admin: false })
+  @ValidateNested()
+  public diff?: ConnectionDifficultyFilterInput;
 
   @GraphQLField(_type => [ExercisesFilterInput], {
     nullable: true,

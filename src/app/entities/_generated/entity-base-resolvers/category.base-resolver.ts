@@ -6,6 +6,7 @@ import { Inject, Service } from 'typedi';
 import { IRequesterAuthContext } from '../../../_common/interfaces/requester-context.interface';
 import { AuthContext } from '../../../access-control/_common/decorators/auth-context.decorator';
 import { AuthorizedAdmin } from '../../../access-control/authorization/authorized-admin.decorator';
+import { InjectScoped } from '../../../access-control/scoping/inject-scoped.decorator';
 import { ScopingService } from '../../../access-control/scoping/scoping.service';
 import { IBaseRepository } from '../../../entity-management/interfaces/base-repository.interface';
 import { IConnectionArgs } from '../../../query-building/connection/interfaces/connection-args.interface';
@@ -25,13 +26,16 @@ export abstract class CategoryBaseResolver {
 
   @AuthorizedAdmin()
   @Query(_returns => Category, { description: 'Find Category by Object ID.' })
-  public async internalGetCategory(@Arg('id') id: string): Promise<Category> {
-    return await this.entityRepository.findOneOrThrow(id);
+  public async getCategory(
+    @Arg('id', _type => ObjectId) id: ObjectId,
+    @InjectScoped('id.id', Category) entity: Category,
+  ): Promise<Category> {
+    return entity;
   }
 
   @AuthorizedAdmin()
   @Query(_returns => CategoryConnection, { description: 'Find Categories by connection arguments.' })
-  public async internalGetCategories(
+  public async getCategories(
     @Args(_type => CategoriesArgs) args: IConnectionArgs<Category>,
     @RequestedFields() requestedFields: string[],
     @AuthContext() authContext: IRequesterAuthContext,

@@ -6,6 +6,7 @@ import { Inject, Service } from 'typedi';
 import { IRequesterAuthContext } from '../../../_common/interfaces/requester-context.interface';
 import { AuthContext } from '../../../access-control/_common/decorators/auth-context.decorator';
 import { AuthorizedAdmin } from '../../../access-control/authorization/authorized-admin.decorator';
+import { InjectScoped } from '../../../access-control/scoping/inject-scoped.decorator';
 import { ScopingService } from '../../../access-control/scoping/scoping.service';
 import { IBaseRepository } from '../../../entity-management/interfaces/base-repository.interface';
 import { IConnectionArgs } from '../../../query-building/connection/interfaces/connection-args.interface';
@@ -25,13 +26,16 @@ export abstract class PlanBaseResolver {
 
   @AuthorizedAdmin()
   @Query(_returns => Plan, { description: 'Find Plan by Object ID.' })
-  public async internalGetPlan(@Arg('id') id: string): Promise<Plan> {
-    return await this.entityRepository.findOneOrThrow(id);
+  public async getPlan(
+    @Arg('id', _type => ObjectId) id: ObjectId,
+    @InjectScoped('id.id', Plan) entity: Plan,
+  ): Promise<Plan> {
+    return entity;
   }
 
   @AuthorizedAdmin()
   @Query(_returns => PlanConnection, { description: 'Find Plans by connection arguments.' })
-  public async internalGetPlans(
+  public async getPlans(
     @Args(_type => PlansArgs) args: IConnectionArgs<Plan>,
     @RequestedFields() requestedFields: string[],
     @AuthContext() authContext: IRequesterAuthContext,

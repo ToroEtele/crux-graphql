@@ -14,6 +14,7 @@ import { Inject, Service } from "typedi";
 import { IRequesterAuthContext } from "../../../_common/interfaces/requester-context.interface";
 import { AuthContext } from "../../../access-control/_common/decorators/auth-context.decorator";
 import { AuthorizedAdmin } from "../../../access-control/authorization/authorized-admin.decorator";
+import { InjectScoped } from "../../../access-control/scoping/inject-scoped.decorator";
 import { ScopingService } from "../../../access-control/scoping/scoping.service";
 <% if (!skipId) { -%>
 import { IBaseRepository } from "../../../entity-management/interfaces/base-repository.interface";
@@ -36,14 +37,14 @@ export abstract class <%= name %>BaseResolver {
 
   @AuthorizedAdmin()
   @Query((_returns) => <%= name %>, { description: "Find <%= name %> by Object ID." })
-  public async internalGet<%= name %>(@Arg("id") id: string): Promise<<%= name %>> {
-    return await this.entityRepository.findOneOrThrow(id);
+  public async get<%= name %>(@Arg('id', _type => ObjectId) id: ObjectId, @InjectScoped("id.id", <%= name %>) entity: <%= name %>): Promise<<%= name %>> {
+    return entity;
   }
   <% } -%>
 
   @AuthorizedAdmin()
   @Query((_returns) => <%= name %>Connection, {description: "Find <%= names %> by connection arguments."})
-  public async internalGet<%= names %>(
+  public async get<%= names %>(
     @Args((_type) => <%= names %>Args) args: IConnectionArgs<<%= name %>>,
     @RequestedFields() requestedFields: string[],
     @AuthContext() authContext: IRequesterAuthContext,

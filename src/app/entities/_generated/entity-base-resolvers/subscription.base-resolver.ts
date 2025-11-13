@@ -6,6 +6,7 @@ import { Inject, Service } from 'typedi';
 import { IRequesterAuthContext } from '../../../_common/interfaces/requester-context.interface';
 import { AuthContext } from '../../../access-control/_common/decorators/auth-context.decorator';
 import { AuthorizedAdmin } from '../../../access-control/authorization/authorized-admin.decorator';
+import { InjectScoped } from '../../../access-control/scoping/inject-scoped.decorator';
 import { ScopingService } from '../../../access-control/scoping/scoping.service';
 import { IBaseRepository } from '../../../entity-management/interfaces/base-repository.interface';
 import { IConnectionArgs } from '../../../query-building/connection/interfaces/connection-args.interface';
@@ -25,13 +26,16 @@ export abstract class SubscriptionBaseResolver {
 
   @AuthorizedAdmin()
   @Query(_returns => Subscription, { description: 'Find Subscription by Object ID.' })
-  public async internalGetSubscription(@Arg('id') id: string): Promise<Subscription> {
-    return await this.entityRepository.findOneOrThrow(id);
+  public async getSubscription(
+    @Arg('id', _type => ObjectId) id: ObjectId,
+    @InjectScoped('id.id', Subscription) entity: Subscription,
+  ): Promise<Subscription> {
+    return entity;
   }
 
   @AuthorizedAdmin()
   @Query(_returns => SubscriptionConnection, { description: 'Find Subscriptions by connection arguments.' })
-  public async internalGetSubscriptions(
+  public async getSubscriptions(
     @Args(_type => SubscriptionsArgs) args: IConnectionArgs<Subscription>,
     @RequestedFields() requestedFields: string[],
     @AuthContext() authContext: IRequesterAuthContext,

@@ -10,19 +10,21 @@ import { ConnectionStringFilterInput } from '../../../query-building/connection/
 import { Field as GraphQLField } from '../../_common/decorators/field.decorator';
 import { Workout } from '../../workout/workout.entity';
 
+import { ConnectionDifficultyFilterInput } from './connection-difficulty-filter.input-type';
+
 @InputType()
 export class WorkoutsFilterInput implements ConnectionFilter<Workout> {
   @GraphQLField(_type => ConnectionStringFilterInput, { nullable: true, admin: false })
   @ValidateNested()
   public name?: ConnectionStringFilterInput;
 
-  @GraphQLField(_type => ConnectionStringFilterInput, { nullable: true, admin: false })
-  @ValidateNested()
-  public diff?: ConnectionStringFilterInput;
-
   @GraphQLField(_type => ConnectionBooleanFilterInput, { nullable: true, admin: false })
   @ValidateNested()
   public isPublic?: ConnectionBooleanFilterInput;
+
+  @GraphQLField(_type => ConnectionDifficultyFilterInput, { nullable: true, admin: false })
+  @ValidateNested()
+  public diff?: ConnectionDifficultyFilterInput;
 
   @GraphQLField(_type => [WorkoutsFilterInput], {
     nullable: true,

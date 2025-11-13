@@ -8,6 +8,7 @@ import { PlanWorkoutResolver } from '@app/entities/plan-workout/plan-workout.res
 import { WorkoutExerciseResolver } from '@app/entities/workout-exercise/workout-exercise.resolver';
 import { ExerciseResolver } from '@app/entities/exercise/exercise.resolver';
 import { WorkoutResolver } from '@app/entities/workout/workout.resolver';
+import { CategoryResolver } from '@app/entities/category/category.resolver';
 
 const resolvers: NonEmptyArray<Function> = [
   // Business entities
@@ -15,6 +16,7 @@ const resolvers: NonEmptyArray<Function> = [
   SubscriptionResolver,
   UserResolver,
   // Core entities
+  CategoryResolver,
   PlanResolver,
   PlanWorkoutResolver,
   WorkoutResolver,

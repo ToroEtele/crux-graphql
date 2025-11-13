@@ -6,6 +6,7 @@ import { Inject, Service } from 'typedi';
 import { IRequesterAuthContext } from '../../../_common/interfaces/requester-context.interface';
 import { AuthContext } from '../../../access-control/_common/decorators/auth-context.decorator';
 import { AuthorizedAdmin } from '../../../access-control/authorization/authorized-admin.decorator';
+import { InjectScoped } from '../../../access-control/scoping/inject-scoped.decorator';
 import { ScopingService } from '../../../access-control/scoping/scoping.service';
 import { IBaseRepository } from '../../../entity-management/interfaces/base-repository.interface';
 import { IConnectionArgs } from '../../../query-building/connection/interfaces/connection-args.interface';
@@ -25,13 +26,16 @@ export abstract class PlanWorkoutBaseResolver {
 
   @AuthorizedAdmin()
   @Query(_returns => PlanWorkout, { description: 'Find PlanWorkout by Object ID.' })
-  public async internalGetPlanWorkout(@Arg('id') id: string): Promise<PlanWorkout> {
-    return await this.entityRepository.findOneOrThrow(id);
+  public async getPlanWorkout(
+    @Arg('id', _type => ObjectId) id: ObjectId,
+    @InjectScoped('id.id', PlanWorkout) entity: PlanWorkout,
+  ): Promise<PlanWorkout> {
+    return entity;
   }
 
   @AuthorizedAdmin()
   @Query(_returns => PlanWorkoutConnection, { description: 'Find PlanWorkouts by connection arguments.' })
-  public async internalGetPlanWorkouts(
+  public async getPlanWorkouts(
     @Args(_type => PlanWorkoutsArgs) args: IConnectionArgs<PlanWorkout>,
     @RequestedFields() requestedFields: string[],
     @AuthContext() authContext: IRequesterAuthContext,

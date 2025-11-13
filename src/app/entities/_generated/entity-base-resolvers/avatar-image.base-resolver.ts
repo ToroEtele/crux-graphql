@@ -6,6 +6,7 @@ import { Inject, Service } from 'typedi';
 import { IRequesterAuthContext } from '../../../_common/interfaces/requester-context.interface';
 import { AuthContext } from '../../../access-control/_common/decorators/auth-context.decorator';
 import { AuthorizedAdmin } from '../../../access-control/authorization/authorized-admin.decorator';
+import { InjectScoped } from '../../../access-control/scoping/inject-scoped.decorator';
 import { ScopingService } from '../../../access-control/scoping/scoping.service';
 import { IBaseRepository } from '../../../entity-management/interfaces/base-repository.interface';
 import { IConnectionArgs } from '../../../query-building/connection/interfaces/connection-args.interface';
@@ -25,13 +26,16 @@ export abstract class AvatarImageBaseResolver {
 
   @AuthorizedAdmin()
   @Query(_returns => AvatarImage, { description: 'Find AvatarImage by Object ID.' })
-  public async internalGetAvatarImage(@Arg('id') id: string): Promise<AvatarImage> {
-    return await this.entityRepository.findOneOrThrow(id);
+  public async getAvatarImage(
+    @Arg('id', _type => ObjectId) id: ObjectId,
+    @InjectScoped('id.id', AvatarImage) entity: AvatarImage,
+  ): Promise<AvatarImage> {
+    return entity;
   }
 
   @AuthorizedAdmin()
   @Query(_returns => AvatarImageConnection, { description: 'Find AvatarImages by connection arguments.' })
-  public async internalGetAvatarImages(
+  public async getAvatarImages(
     @Args(_type => AvatarImagesArgs) args: IConnectionArgs<AvatarImage>,
     @RequestedFields() requestedFields: string[],
     @AuthContext() authContext: IRequesterAuthContext,

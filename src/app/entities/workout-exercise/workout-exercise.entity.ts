@@ -28,11 +28,11 @@ export class WorkoutExercise extends BaseEntity {
   @Column({ type: 'int' })
   reps!: number;
 
-  @Field((_type) => Number)
+  @Field((_type) => Number, { nullable: true })
   @Column({ type: 'int', nullable: true })
   time?: number | null;
 
-  @Field((_type) => Number)
+  @Field((_type) => Number, { nullable: true })
   @Column({ type: 'int', nullable: true })
   weight?: number | null;
 

@@ -6,6 +6,7 @@ import { Inject, Service } from 'typedi';
 import { IRequesterAuthContext } from '../../../_common/interfaces/requester-context.interface';
 import { AuthContext } from '../../../access-control/_common/decorators/auth-context.decorator';
 import { AuthorizedAdmin } from '../../../access-control/authorization/authorized-admin.decorator';
+import { InjectScoped } from '../../../access-control/scoping/inject-scoped.decorator';
 import { ScopingService } from '../../../access-control/scoping/scoping.service';
 import { IConnectionArgs } from '../../../query-building/connection/interfaces/connection-args.interface';
 import { IConnection } from '../../../query-building/connection/interfaces/connection.interface';
@@ -22,7 +23,7 @@ export abstract class SessionBaseResolver {
 
   @AuthorizedAdmin()
   @Query(_returns => SessionConnection, { description: 'Find Sessions by connection arguments.' })
-  public async internalGetSessions(
+  public async getSessions(
     @Args(_type => SessionsArgs) args: IConnectionArgs<Session>,
     @RequestedFields() requestedFields: string[],
     @AuthContext() authContext: IRequesterAuthContext,

@@ -6,6 +6,7 @@ import { Inject, Service } from 'typedi';
 import { IRequesterAuthContext } from '../../../_common/interfaces/requester-context.interface';
 import { AuthContext } from '../../../access-control/_common/decorators/auth-context.decorator';
 import { AuthorizedAdmin } from '../../../access-control/authorization/authorized-admin.decorator';
+import { InjectScoped } from '../../../access-control/scoping/inject-scoped.decorator';
 import { ScopingService } from '../../../access-control/scoping/scoping.service';
 import { IBaseRepository } from '../../../entity-management/interfaces/base-repository.interface';
 import { IConnectionArgs } from '../../../query-building/connection/interfaces/connection-args.interface';
@@ -28,13 +29,16 @@ export abstract class VerificationTokenBaseResolver {
 
   @AuthorizedAdmin()
   @Query(_returns => VerificationToken, { description: 'Find VerificationToken by Object ID.' })
-  public async internalGetVerificationToken(@Arg('id') id: string): Promise<VerificationToken> {
-    return await this.entityRepository.findOneOrThrow(id);
+  public async getVerificationToken(
+    @Arg('id', _type => ObjectId) id: ObjectId,
+    @InjectScoped('id.id', VerificationToken) entity: VerificationToken,
+  ): Promise<VerificationToken> {
+    return entity;
   }
 
   @AuthorizedAdmin()
   @Query(_returns => VerificationTokenConnection, { description: 'Find VerificationTokens by connection arguments.' })
-  public async internalGetVerificationTokens(
+  public async getVerificationTokens(
     @Args(_type => VerificationTokensArgs) args: IConnectionArgs<VerificationToken>,
     @RequestedFields() requestedFields: string[],
     @AuthContext() authContext: IRequesterAuthContext,

@@ -6,6 +6,7 @@ import { Inject, Service } from 'typedi';
 import { IRequesterAuthContext } from '../../../_common/interfaces/requester-context.interface';
 import { AuthContext } from '../../../access-control/_common/decorators/auth-context.decorator';
 import { AuthorizedAdmin } from '../../../access-control/authorization/authorized-admin.decorator';
+import { InjectScoped } from '../../../access-control/scoping/inject-scoped.decorator';
 import { ScopingService } from '../../../access-control/scoping/scoping.service';
 import { IBaseRepository } from '../../../entity-management/interfaces/base-repository.interface';
 import { IConnectionArgs } from '../../../query-building/connection/interfaces/connection-args.interface';
@@ -25,13 +26,16 @@ export abstract class UserBaseResolver {
 
   @AuthorizedAdmin()
   @Query(_returns => User, { description: 'Find User by Object ID.' })
-  public async internalGetUser(@Arg('id') id: string): Promise<User> {
-    return await this.entityRepository.findOneOrThrow(id);
+  public async getUser(
+    @Arg('id', _type => ObjectId) id: ObjectId,
+    @InjectScoped('id.id', User) entity: User,
+  ): Promise<User> {
+    return entity;
   }
 
   @AuthorizedAdmin()
   @Query(_returns => UserConnection, { description: 'Find Users by connection arguments.' })
-  public async internalGetUsers(
+  public async getUsers(
     @Args(_type => UsersArgs) args: IConnectionArgs<User>,
     @RequestedFields() requestedFields: string[],
     @AuthContext() authContext: IRequesterAuthContext,

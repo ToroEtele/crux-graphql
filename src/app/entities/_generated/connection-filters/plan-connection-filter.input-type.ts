@@ -11,6 +11,8 @@ import { ConnectionStringFilterInput } from '../../../query-building/connection/
 import { Field as GraphQLField } from '../../_common/decorators/field.decorator';
 import { Plan } from '../../plan/plan.entity';
 
+import { ConnectionDifficultyFilterInput } from './connection-difficulty-filter.input-type';
+
 @InputType()
 export class PlansFilterInput implements ConnectionFilter<Plan> {
   @GraphQLField(_type => ConnectionStringFilterInput, { nullable: true, admin: false })
@@ -21,13 +23,13 @@ export class PlansFilterInput implements ConnectionFilter<Plan> {
   @ValidateNested()
   public durationWeeks?: ConnectionFloatFilterInput;
 
-  @GraphQLField(_type => ConnectionStringFilterInput, { nullable: true, admin: false })
-  @ValidateNested()
-  public diff?: ConnectionStringFilterInput;
-
   @GraphQLField(_type => ConnectionBooleanFilterInput, { nullable: true, admin: false })
   @ValidateNested()
   public isPublic?: ConnectionBooleanFilterInput;
+
+  @GraphQLField(_type => ConnectionDifficultyFilterInput, { nullable: true, admin: false })
+  @ValidateNested()
+  public diff?: ConnectionDifficultyFilterInput;
 
   @GraphQLField(_type => [PlansFilterInput], {
     nullable: true,

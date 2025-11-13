@@ -6,6 +6,7 @@ import { Inject, Service } from 'typedi';
 import { IRequesterAuthContext } from '../../../_common/interfaces/requester-context.interface';
 import { AuthContext } from '../../../access-control/_common/decorators/auth-context.decorator';
 import { AuthorizedAdmin } from '../../../access-control/authorization/authorized-admin.decorator';
+import { InjectScoped } from '../../../access-control/scoping/inject-scoped.decorator';
 import { ScopingService } from '../../../access-control/scoping/scoping.service';
 import { IBaseRepository } from '../../../entity-management/interfaces/base-repository.interface';
 import { IConnectionArgs } from '../../../query-building/connection/interfaces/connection-args.interface';
@@ -28,15 +29,18 @@ export abstract class PlanWorkoutExerciseOverrideBaseResolver {
 
   @AuthorizedAdmin()
   @Query(_returns => PlanWorkoutExerciseOverride, { description: 'Find PlanWorkoutExerciseOverride by Object ID.' })
-  public async internalGetPlanWorkoutExerciseOverride(@Arg('id') id: string): Promise<PlanWorkoutExerciseOverride> {
-    return await this.entityRepository.findOneOrThrow(id);
+  public async getPlanWorkoutExerciseOverride(
+    @Arg('id', _type => ObjectId) id: ObjectId,
+    @InjectScoped('id.id', PlanWorkoutExerciseOverride) entity: PlanWorkoutExerciseOverride,
+  ): Promise<PlanWorkoutExerciseOverride> {
+    return entity;
   }
 
   @AuthorizedAdmin()
   @Query(_returns => PlanWorkoutExerciseOverrideConnection, {
     description: 'Find PlanWorkoutExerciseOverrides by connection arguments.',
   })
-  public async internalGetPlanWorkoutExerciseOverrides(
+  public async getPlanWorkoutExerciseOverrides(
     @Args(_type => PlanWorkoutExerciseOverridesArgs) args: IConnectionArgs<PlanWorkoutExerciseOverride>,
     @RequestedFields() requestedFields: string[],
     @AuthContext() authContext: IRequesterAuthContext,

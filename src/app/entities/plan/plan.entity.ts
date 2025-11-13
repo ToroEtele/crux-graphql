@@ -7,6 +7,7 @@ import { BaseEntity } from '@common/base-types/base.entity';
 
 import { Category } from '../category/category.entity';
 import { PlanWorkout } from '../plan-workout/plan-workout.entity';
+import { Difficulty } from '../_common/constants/enum/difficulty.enum';
 
 @Entity()
 export class Plan extends BaseEntity {
@@ -26,9 +27,9 @@ export class Plan extends BaseEntity {
   @Column({ name: 'duration_weeks', type: 'int' })
   durationWeeks!: number;
 
-  @Field((_type) => String, { filterable: true, sortable: true })
+  @Field((_type) => Difficulty, { filterable: true, sortable: true, enum: 'Difficulty' })
   @Column({ type: 'varchar', length: 255 })
-  diff!: string;
+  diff!: Difficulty;
 
   @Field((_type) => Boolean, { filterable: true, sortable: true })
   @Column({ name: 'is_public', type: 'tinyint', default: false })
