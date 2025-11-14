@@ -11,6 +11,7 @@ import { Plan } from './plan.entity';
 import { PlanWorkoutRepository } from '../plan-workout/plan-workout.repository';
 import { CategoryRepository } from '../category/category.repository';
 import { PlanRepository } from './plan.repository';
+import { AuthorizedMember } from '@app/access-control/authorization/decorators/authorized-member.decorator';
 
 @Service()
 @Resolver((_of) => Plan)
@@ -28,6 +29,7 @@ export class PlanResolver extends PlanBaseResolver {
     return await this.categoryRepository.findOneOrThrow(plan.categoryId);
   }
 
+  @AuthorizedMember()
   @FieldResolver((_type) => [PlanWorkout])
   async workouts(@Root() plan: Plan): Promise<PlanWorkout[]> {
     return await this.planWorkoutRepository

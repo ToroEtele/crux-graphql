@@ -5,7 +5,7 @@ import { Inject, Service } from 'typedi';
 
 import { IRequesterAuthContext } from '../../../_common/interfaces/requester-context.interface';
 import { AuthContext } from '../../../access-control/_common/decorators/auth-context.decorator';
-import { AuthorizedAdmin } from '../../../access-control/authorization/authorized-admin.decorator';
+import { AuthorizedAdmin } from '../../../access-control/authorization/decorators/authorized-admin.decorator';
 import { InjectScoped } from '../../../access-control/scoping/inject-scoped.decorator';
 import { ScopingService } from '../../../access-control/scoping/scoping.service';
 import { IConnectionArgs } from '../../../query-building/connection/interfaces/connection-args.interface';
@@ -16,17 +16,17 @@ import { RequestedFields } from '../../_common/decorators/requested-fields.decor
 import { Session } from '../../session/session.entity';
 import { SessionConnection, SessionsArgs } from '../entity-connections/session.connection';
 
-@Resolver(_of => Session)
+@Resolver((_of) => Session)
 @Service()
 export abstract class SessionBaseResolver {
-  @Inject(_type => ScopingService) protected scopingService!: ScopingService;
+  @Inject((_type) => ScopingService) protected scopingService!: ScopingService;
 
   @AuthorizedAdmin()
-  @Query(_returns => SessionConnection, { description: 'Find Sessions by connection arguments.' })
+  @Query((_returns) => SessionConnection, { description: 'Find Sessions by connection arguments.' })
   public async getSessions(
-    @Args(_type => SessionsArgs) args: IConnectionArgs<Session>,
+    @Args((_type) => SessionsArgs) args: IConnectionArgs<Session>,
     @RequestedFields() requestedFields: string[],
-    @AuthContext() authContext: IRequesterAuthContext,
+    @AuthContext() authContext: IRequesterAuthContext
   ): Promise<IConnection<Session>> {
     const { filter, orderBy } = args;
     return await new QueryService(this.scopingService.createScopedQuery(authContext, Session))

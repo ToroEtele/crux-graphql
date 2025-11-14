@@ -3,7 +3,7 @@
 import { Field, InputType } from 'type-graphql';
 
 import { IConnectionFilterInput } from '../../../query-building/connection/filtering/interfaces/connection-filter-input.interface';
-import { Difficulty } from '@entities/_common/constants/enum/difficulty.enum';
+import { Difficulty } from '../../plan/enums/difficulty.enum';
 
 @InputType()
 export class ConnectionDifficultyFilterInput implements IConnectionFilterInput<Difficulty> {

@@ -5,7 +5,7 @@ import { Inject, Service } from 'typedi';
 
 import { IRequesterAuthContext } from '../../../_common/interfaces/requester-context.interface';
 import { AuthContext } from '../../../access-control/_common/decorators/auth-context.decorator';
-import { AuthorizedAdmin } from '../../../access-control/authorization/authorized-admin.decorator';
+import { AuthorizedAdmin } from '../../../access-control/authorization/decorators/authorized-admin.decorator';
 import { InjectScoped } from '../../../access-control/scoping/inject-scoped.decorator';
 import { ScopingService } from '../../../access-control/scoping/scoping.service';
 import { IBaseRepository } from '../../../entity-management/interfaces/base-repository.interface';
@@ -17,28 +17,28 @@ import { RequestedFields } from '../../_common/decorators/requested-fields.decor
 import { WorkoutExercise } from '../../workout-exercise/workout-exercise.entity';
 import { WorkoutExerciseConnection, WorkoutExercisesArgs } from '../entity-connections/workout-exercise.connection';
 
-@Resolver(_of => WorkoutExercise)
+@Resolver((_of) => WorkoutExercise)
 @Service()
 export abstract class WorkoutExerciseBaseResolver {
-  @Inject(_type => ScopingService) protected scopingService!: ScopingService;
+  @Inject((_type) => ScopingService) protected scopingService!: ScopingService;
 
   constructor(private readonly entityRepository: IBaseRepository<WorkoutExercise>) {}
 
   @AuthorizedAdmin()
-  @Query(_returns => WorkoutExercise, { description: 'Find WorkoutExercise by Object ID.' })
+  @Query((_returns) => WorkoutExercise, { description: 'Find WorkoutExercise by Object ID.' })
   public async getWorkoutExercise(
-    @Arg('id', _type => ObjectId) id: ObjectId,
-    @InjectScoped('id.id', WorkoutExercise) entity: WorkoutExercise,
+    @Arg('id', (_type) => ObjectId) id: ObjectId,
+    @InjectScoped('id.id', WorkoutExercise) entity: WorkoutExercise
   ): Promise<WorkoutExercise> {
     return entity;
   }
 
   @AuthorizedAdmin()
-  @Query(_returns => WorkoutExerciseConnection, { description: 'Find WorkoutExercises by connection arguments.' })
+  @Query((_returns) => WorkoutExerciseConnection, { description: 'Find WorkoutExercises by connection arguments.' })
   public async getWorkoutExercises(
-    @Args(_type => WorkoutExercisesArgs) args: IConnectionArgs<WorkoutExercise>,
+    @Args((_type) => WorkoutExercisesArgs) args: IConnectionArgs<WorkoutExercise>,
     @RequestedFields() requestedFields: string[],
-    @AuthContext() authContext: IRequesterAuthContext,
+    @AuthContext() authContext: IRequesterAuthContext
   ): Promise<IConnection<WorkoutExercise>> {
     const { filter, orderBy } = args;
     return await new QueryService(this.scopingService.createScopedQuery(authContext, WorkoutExercise))

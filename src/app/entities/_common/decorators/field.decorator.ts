@@ -4,7 +4,7 @@ import Container from 'typedi';
 
 import { LogService } from '@common/logging/log.service';
 
-import { AuthorizedAdmin } from '@access-control/authorization/authorized-admin.decorator';
+import { AuthorizedAdmin } from '@app/access-control/authorization/decorators/authorized-admin.decorator';
 
 import { FilterableField } from '../../../query-building/filtering/decorators/filterable-field.decorator';
 import { SortableField } from '../../../query-building/sorting/decorators/sortable-field.decorator';

@@ -21,6 +21,7 @@ export class EnumConnectionFiltersGenerator extends BaseGenerator {
       enums.map(async ({ name, schemaName, filePath }) => {
         const fileName = `connection-${kebabCase(schemaName)}-filter.input-type.ts`;
         const relativeFilePath = relativePath('app/entities/_generated/connection-filters', filePath);
+
         this.storage.write(fileName, await new this.renderer(name, schemaName, relativeFilePath.replace(/\\/g, '/')).render());
       })
     );

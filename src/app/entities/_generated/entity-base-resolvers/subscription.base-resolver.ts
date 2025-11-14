@@ -5,7 +5,7 @@ import { Inject, Service } from 'typedi';
 
 import { IRequesterAuthContext } from '../../../_common/interfaces/requester-context.interface';
 import { AuthContext } from '../../../access-control/_common/decorators/auth-context.decorator';
-import { AuthorizedAdmin } from '../../../access-control/authorization/authorized-admin.decorator';
+import { AuthorizedAdmin } from '../../../access-control/authorization/decorators/authorized-admin.decorator';
 import { InjectScoped } from '../../../access-control/scoping/inject-scoped.decorator';
 import { ScopingService } from '../../../access-control/scoping/scoping.service';
 import { IBaseRepository } from '../../../entity-management/interfaces/base-repository.interface';
@@ -17,28 +17,25 @@ import { RequestedFields } from '../../_common/decorators/requested-fields.decor
 import { Subscription } from '../../subscription/subscription.entity';
 import { SubscriptionConnection, SubscriptionsArgs } from '../entity-connections/subscription.connection';
 
-@Resolver(_of => Subscription)
+@Resolver((_of) => Subscription)
 @Service()
 export abstract class SubscriptionBaseResolver {
-  @Inject(_type => ScopingService) protected scopingService!: ScopingService;
+  @Inject((_type) => ScopingService) protected scopingService!: ScopingService;
 
   constructor(private readonly entityRepository: IBaseRepository<Subscription>) {}
 
   @AuthorizedAdmin()
-  @Query(_returns => Subscription, { description: 'Find Subscription by Object ID.' })
-  public async getSubscription(
-    @Arg('id', _type => ObjectId) id: ObjectId,
-    @InjectScoped('id.id', Subscription) entity: Subscription,
-  ): Promise<Subscription> {
+  @Query((_returns) => Subscription, { description: 'Find Subscription by Object ID.' })
+  public async getSubscription(@Arg('id', (_type) => ObjectId) id: ObjectId, @InjectScoped('id.id', Subscription) entity: Subscription): Promise<Subscription> {
     return entity;
   }
 
   @AuthorizedAdmin()
-  @Query(_returns => SubscriptionConnection, { description: 'Find Subscriptions by connection arguments.' })
+  @Query((_returns) => SubscriptionConnection, { description: 'Find Subscriptions by connection arguments.' })
   public async getSubscriptions(
-    @Args(_type => SubscriptionsArgs) args: IConnectionArgs<Subscription>,
+    @Args((_type) => SubscriptionsArgs) args: IConnectionArgs<Subscription>,
     @RequestedFields() requestedFields: string[],
-    @AuthContext() authContext: IRequesterAuthContext,
+    @AuthContext() authContext: IRequesterAuthContext
   ): Promise<IConnection<Subscription>> {
     const { filter, orderBy } = args;
     return await new QueryService(this.scopingService.createScopedQuery(authContext, Subscription))

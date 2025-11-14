@@ -5,7 +5,7 @@ import { Inject, Service } from 'typedi';
 
 import { IRequesterAuthContext } from '../../../_common/interfaces/requester-context.interface';
 import { AuthContext } from '../../../access-control/_common/decorators/auth-context.decorator';
-import { AuthorizedAdmin } from '../../../access-control/authorization/authorized-admin.decorator';
+import { AuthorizedAdmin } from '../../../access-control/authorization/decorators/authorized-admin.decorator';
 import { InjectScoped } from '../../../access-control/scoping/inject-scoped.decorator';
 import { ScopingService } from '../../../access-control/scoping/scoping.service';
 import { IBaseRepository } from '../../../entity-management/interfaces/base-repository.interface';
@@ -17,28 +17,25 @@ import { RequestedFields } from '../../_common/decorators/requested-fields.decor
 import { Plan } from '../../plan/plan.entity';
 import { PlanConnection, PlansArgs } from '../entity-connections/plan.connection';
 
-@Resolver(_of => Plan)
+@Resolver((_of) => Plan)
 @Service()
 export abstract class PlanBaseResolver {
-  @Inject(_type => ScopingService) protected scopingService!: ScopingService;
+  @Inject((_type) => ScopingService) protected scopingService!: ScopingService;
 
   constructor(private readonly entityRepository: IBaseRepository<Plan>) {}
 
   @AuthorizedAdmin()
-  @Query(_returns => Plan, { description: 'Find Plan by Object ID.' })
-  public async getPlan(
-    @Arg('id', _type => ObjectId) id: ObjectId,
-    @InjectScoped('id.id', Plan) entity: Plan,
-  ): Promise<Plan> {
+  @Query((_returns) => Plan, { description: 'Find Plan by Object ID.' })
+  public async getPlan(@Arg('id', (_type) => ObjectId) id: ObjectId, @InjectScoped('id.id', Plan) entity: Plan): Promise<Plan> {
     return entity;
   }
 
   @AuthorizedAdmin()
-  @Query(_returns => PlanConnection, { description: 'Find Plans by connection arguments.' })
+  @Query((_returns) => PlanConnection, { description: 'Find Plans by connection arguments.' })
   public async getPlans(
-    @Args(_type => PlansArgs) args: IConnectionArgs<Plan>,
+    @Args((_type) => PlansArgs) args: IConnectionArgs<Plan>,
     @RequestedFields() requestedFields: string[],
-    @AuthContext() authContext: IRequesterAuthContext,
+    @AuthContext() authContext: IRequesterAuthContext
   ): Promise<IConnection<Plan>> {
     const { filter, orderBy } = args;
     return await new QueryService(this.scopingService.createScopedQuery(authContext, Plan))

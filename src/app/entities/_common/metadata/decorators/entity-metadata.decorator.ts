@@ -4,6 +4,7 @@ import { BaseClassDecorator } from '@common/base-types/decorators/base-class.dec
 import { Constructable } from '@common/base-types/constructable.type';
 
 import { metadataManager, MetadataType } from '@common/metadata';
+import { AuthorizationLevel } from '@app/access-control/authorization/constants/authorization-level.enum';
 
 interface IRetrievable {
   retrievable?: true;
@@ -33,6 +34,7 @@ export type IEntityMetadataDecoratorArgs = {
    * @default false
    */
   admin?: boolean;
+  authorization?: AuthorizationLevel;
   implements?: Constructable<unknown>;
   discriminatorColumn?: ColumnOptions | string;
   /** instead of kebab(entity) you can tell file name */

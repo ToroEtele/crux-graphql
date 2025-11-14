@@ -5,7 +5,7 @@ import { Inject, Service } from 'typedi';
 
 import { IRequesterAuthContext } from '../../../_common/interfaces/requester-context.interface';
 import { AuthContext } from '../../../access-control/_common/decorators/auth-context.decorator';
-import { AuthorizedAdmin } from '../../../access-control/authorization/authorized-admin.decorator';
+import { AuthorizedAdmin } from '../../../access-control/authorization/decorators/authorized-admin.decorator';
 import { InjectScoped } from '../../../access-control/scoping/inject-scoped.decorator';
 import { ScopingService } from '../../../access-control/scoping/scoping.service';
 import { IBaseRepository } from '../../../entity-management/interfaces/base-repository.interface';
@@ -17,28 +17,25 @@ import { RequestedFields } from '../../_common/decorators/requested-fields.decor
 import { Category } from '../../category/category.entity';
 import { CategoryConnection, CategoriesArgs } from '../entity-connections/category.connection';
 
-@Resolver(_of => Category)
+@Resolver((_of) => Category)
 @Service()
 export abstract class CategoryBaseResolver {
-  @Inject(_type => ScopingService) protected scopingService!: ScopingService;
+  @Inject((_type) => ScopingService) protected scopingService!: ScopingService;
 
   constructor(private readonly entityRepository: IBaseRepository<Category>) {}
 
   @AuthorizedAdmin()
-  @Query(_returns => Category, { description: 'Find Category by Object ID.' })
-  public async getCategory(
-    @Arg('id', _type => ObjectId) id: ObjectId,
-    @InjectScoped('id.id', Category) entity: Category,
-  ): Promise<Category> {
+  @Query((_returns) => Category, { description: 'Find Category by Object ID.' })
+  public async getCategory(@Arg('id', (_type) => ObjectId) id: ObjectId, @InjectScoped('id.id', Category) entity: Category): Promise<Category> {
     return entity;
   }
 
   @AuthorizedAdmin()
-  @Query(_returns => CategoryConnection, { description: 'Find Categories by connection arguments.' })
+  @Query((_returns) => CategoryConnection, { description: 'Find Categories by connection arguments.' })
   public async getCategories(
-    @Args(_type => CategoriesArgs) args: IConnectionArgs<Category>,
+    @Args((_type) => CategoriesArgs) args: IConnectionArgs<Category>,
     @RequestedFields() requestedFields: string[],
-    @AuthContext() authContext: IRequesterAuthContext,
+    @AuthContext() authContext: IRequesterAuthContext
   ): Promise<IConnection<Category>> {
     const { filter, orderBy } = args;
     return await new QueryService(this.scopingService.createScopedQuery(authContext, Category))

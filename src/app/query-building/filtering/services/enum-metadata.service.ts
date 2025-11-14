@@ -6,7 +6,7 @@ import { FileUtil } from '@utils/storage-system/file.util';
 @Service({ global: true })
 export class EnumsMetadataService {
   private readonly registeredEnums: IEnumFilterData[] = [];
-  private readonly getPathFromSrc = FileUtil.getFullPathFrom('harvest-backend/src');
+  private readonly getPathFromSrc = FileUtil.getFullPathFrom('crux-graphql/src');
 
   public register(enumData: IEnumFilterData): void {
     enumData.filePath = this.getPathFromSrc(enumData.filePath);

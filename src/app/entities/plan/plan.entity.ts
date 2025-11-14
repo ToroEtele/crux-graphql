@@ -7,7 +7,7 @@ import { BaseEntity } from '@common/base-types/base.entity';
 
 import { Category } from '../category/category.entity';
 import { PlanWorkout } from '../plan-workout/plan-workout.entity';
-import { Difficulty } from '../_common/constants/enum/difficulty.enum';
+import { Difficulty } from './enums/difficulty.enum';
 
 @Entity()
 export class Plan extends BaseEntity {

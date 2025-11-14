@@ -5,7 +5,7 @@ import { Inject, Service } from 'typedi';
 
 import { IRequesterAuthContext } from '../../../_common/interfaces/requester-context.interface';
 import { AuthContext } from '../../../access-control/_common/decorators/auth-context.decorator';
-import { AuthorizedAdmin } from '../../../access-control/authorization/authorized-admin.decorator';
+import { AuthorizedAdmin } from '../../../access-control/authorization/decorators/authorized-admin.decorator';
 import { InjectScoped } from '../../../access-control/scoping/inject-scoped.decorator';
 import { ScopingService } from '../../../access-control/scoping/scoping.service';
 import { IBaseRepository } from '../../../entity-management/interfaces/base-repository.interface';
@@ -15,33 +15,30 @@ import { QueryService } from '../../../query-building/query.service';
 import { ObjectId } from '../../_common/object-id/object-id';
 import { RequestedFields } from '../../_common/decorators/requested-fields.decorator';
 import { VerificationToken } from '../../verification-token/verification-token.entity';
-import {
-  VerificationTokenConnection,
-  VerificationTokensArgs,
-} from '../entity-connections/verification-token.connection';
+import { VerificationTokenConnection, VerificationTokensArgs } from '../entity-connections/verification-token.connection';
 
-@Resolver(_of => VerificationToken)
+@Resolver((_of) => VerificationToken)
 @Service()
 export abstract class VerificationTokenBaseResolver {
-  @Inject(_type => ScopingService) protected scopingService!: ScopingService;
+  @Inject((_type) => ScopingService) protected scopingService!: ScopingService;
 
   constructor(private readonly entityRepository: IBaseRepository<VerificationToken>) {}
 
   @AuthorizedAdmin()
-  @Query(_returns => VerificationToken, { description: 'Find VerificationToken by Object ID.' })
+  @Query((_returns) => VerificationToken, { description: 'Find VerificationToken by Object ID.' })
   public async getVerificationToken(
-    @Arg('id', _type => ObjectId) id: ObjectId,
-    @InjectScoped('id.id', VerificationToken) entity: VerificationToken,
+    @Arg('id', (_type) => ObjectId) id: ObjectId,
+    @InjectScoped('id.id', VerificationToken) entity: VerificationToken
   ): Promise<VerificationToken> {
     return entity;
   }
 
   @AuthorizedAdmin()
-  @Query(_returns => VerificationTokenConnection, { description: 'Find VerificationTokens by connection arguments.' })
+  @Query((_returns) => VerificationTokenConnection, { description: 'Find VerificationTokens by connection arguments.' })
   public async getVerificationTokens(
-    @Args(_type => VerificationTokensArgs) args: IConnectionArgs<VerificationToken>,
+    @Args((_type) => VerificationTokensArgs) args: IConnectionArgs<VerificationToken>,
     @RequestedFields() requestedFields: string[],
-    @AuthContext() authContext: IRequesterAuthContext,
+    @AuthContext() authContext: IRequesterAuthContext
   ): Promise<IConnection<VerificationToken>> {
     const { filter, orderBy } = args;
     return await new QueryService(this.scopingService.createScopedQuery(authContext, VerificationToken))
