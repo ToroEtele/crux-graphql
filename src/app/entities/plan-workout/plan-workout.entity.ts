@@ -1,6 +1,5 @@
 import { Column, ManyToOne, OneToMany, PrimaryGeneratedColumn, JoinColumn } from 'typeorm';
 
-import { AuthorizationLevel } from '@app/access-control/authorization/constants/authorization-level.enum';
 import { Entity } from '@app/entity-management/decorators/entity.decorator';
 import { Field } from '@entities/_common/decorators/field.decorator';
 import { ObjectId } from '@entities/_common/object-id/object-id';
@@ -10,9 +9,7 @@ import { PlanWorkoutExerciseOverride } from '../plan-workout-exercise-override/p
 import { Workout } from '../workout/workout.entity';
 import { Plan } from '../plan/plan.entity';
 
-@Entity({
-  authorization: AuthorizationLevel.Member
-})
+@Entity()
 export class PlanWorkout extends BaseEntity {
   @Field((_type) => ObjectId)
   @PrimaryGeneratedColumn()
