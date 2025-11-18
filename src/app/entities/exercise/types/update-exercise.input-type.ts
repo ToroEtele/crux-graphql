@@ -1,5 +1,6 @@
 import { InputType, Field } from 'type-graphql';
 
+import { ObjectId } from '@app/entities/_common/object-id/object-id';
 import { Difficulty } from '../../plan/enums/difficulty.enum';
 
 @InputType()
@@ -16,6 +17,6 @@ export class UpdateExerciseInput {
   @Field({ nullable: true })
   defaultUnits?: string;
 
-  @Field({ nullable: true })
-  categoryId?: number;
+  @Field((_type) => ObjectId, { nullable: true })
+  categoryId!: number;
 }
