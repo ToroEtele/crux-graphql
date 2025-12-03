@@ -5,10 +5,10 @@ import { Field } from '@entities/_common/decorators/field.decorator';
 import { ObjectId } from '@entities/_common/object-id/object-id';
 import { BaseEntity } from '@common/base-types/base.entity';
 
+import { PlanWorkoutExerciseOverride } from '../plan-workout-exercise-override/plan-workout-exercise-override.entity';
+import { WorkoutExerciseParam } from '../workout-exercise-param/workout-exercise-param.entity';
 import { Exercise } from '../exercise/exercise.entity';
 import { Workout } from '../workout/workout.entity';
-import { WorkoutExerciseParam } from '../workout-exercise-param/workout-exercise-param.entity';
-import { PlanWorkoutExerciseOverride } from '../plan-workout-exercise-override/plan-workout-exercise-override.entity';
 
 @Entity()
 export class WorkoutExercise extends BaseEntity {
@@ -44,8 +44,8 @@ export class WorkoutExercise extends BaseEntity {
   @Column({ name: 'rest_between', type: 'int' })
   restBetween!: number;
 
-  @Field((_type) => String)
-  @Column({ type: 'text' })
+  @Field((_type) => String, { nullable: true })
+  @Column({ type: 'text', nullable: true })
   notes!: string;
 
   @Column({ name: 'exercise_id' })
